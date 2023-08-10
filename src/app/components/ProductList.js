@@ -7,7 +7,7 @@ const ProductList = ({ products, setCartItems, setProducts }) => {
   //states
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [numProductsDisplayed, setNumProductsDisplayed] = useState(6);
+  const [numProductsDisplayed, setNumProductsDisplayed] = useState(12);
   const [searchWord, setSearchWord] = useState("");
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   const [newProduct, setNewProduct] = useState({ title: "", price: 0 });
@@ -49,7 +49,7 @@ const ProductList = ({ products, setCartItems, setProducts }) => {
       title: newProduct.title,
       price: newProduct.price,
     };
-  
+
     fetch("https://dummyjson.com/products/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -59,10 +59,10 @@ const ProductList = ({ products, setCartItems, setProducts }) => {
       .then((data) => {
         console.log("New product added:", data);
         setProducts((prevProducts) => [...prevProducts, data]);
-  
+
         // Clear the input fields
         setNewProduct({ title: "", price: 0 });
-  
+
         handleCloseAddProductModal();
       })
       .catch((error) => {
@@ -78,41 +78,43 @@ const ProductList = ({ products, setCartItems, setProducts }) => {
 
   return (
     <div className="mx-auto max-w-screen-lg px-4">
-      <div className="flex items-center mb-4">
+      <div className="header mb-4 flex items-center">
         <img src="/bamazon-logo.png" alt="Bamazon Logo" className="w-8 h-8" />
-        <h1 className="font-bold text-2xl mr-2">Bamazon</h1>
+        <h1 className="font-bold text-3xl ml-2">Bamazon</h1>
       </div>
       <input
         type="text"
         placeholder="Search products"
         value={searchWord}
         onChange={handleSearch}
-        className="py-2 px-4 rounded w-full mb-4"
+        className="search-input w-75 m-4 px-4 py-2 border border-blue-500 rounded-md"
       />
       <ul className="grid grid-cols-3 gap-4 text-neutral">
         {filteredProducts.slice(0, numProductsDisplayed).map((product) => (
-          <li key={product.id} className="bg-white rounded shadow">
-            <div className="p-4 font-bold">
-              <p>{product.title}</p>
-              <p className="text-gray-500">${product.price}</p>
+          <li key={product.id} className="product-card">
+            <div className="p-4 font-bold ">
+            <p className="font-semibold">{product.title}</p>
+              <p className="text-gray-600">${product.price}</p>
               <img
                 src={product.thumbnail}
                 alt="picture of product"
-                className="w-full h-auto max-h-40 object-contain"
+                className="w-full h-auto max-h-40 object-contain mt-4"
               />
-              <button
-                onClick={() => handleOpenModal(product)}
-                className="mt-4 py-2 px-4 btn-primary text-black rounded"
-              >
-                View Details
-              </button>
-              <button
-                onClick={() => handleAddToCart(product)}
-                className="mt-4 py-2 px-4 btn-primary text-black rounded"
-              >
-                Add to cart
-              </button>
-            </div>
+              <div className="flex justify-between mt-4">
+                <button
+                  onClick={() => handleOpenModal(product)}
+                  className="button-yellow"
+                >
+                  View Details
+                </button>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="button-green"
+                >
+                  Add to Cart
+                </button>
+              </div>
+              </div>
           </li>
         ))}
       </ul>
